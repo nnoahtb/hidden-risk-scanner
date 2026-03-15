@@ -12,7 +12,7 @@ import FUND_DATABASE from "../data/fundDatabase";
 
 // ── Color palettes ────────────────────────────────────────────────────────────
 const SECTOR_COLORS  = ["#1d4ed8","#7c3aed","#059669","#d97706","#dc2626","#0891b2","#65a30d","#9ca3af"];
-const COUNTRY_COLORS = ["#1d4ed8","#2563eb","#3b82f6","#60a5fa","#93c5fd","#bfdbfe","#dbeafe","#eff6ff"];
+const COUNTRY_COLORS = ["#2563eb","#16a34a","#d97706","#dc2626","#7c3aed","#0891b2","#be185d","#9ca3af"];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const RADIAN = Math.PI / 180;
@@ -405,10 +405,11 @@ export default function RiskDashboard({ initialPortfolio, onBack }) {
     initialPortfolio.map((p, i) => ({ id: i + 1, name: p.name, allocation: String(p.allocation) }))
   );
 
-  // Store the original score once on first render
-  const originalScore = useRef(
-    analyzePortfolio(initialPortfolio, FUND_DATABASE).concentrationScore
+  // Store the original result once on first render
+  const originalResult = useRef(
+    analyzePortfolio(initialPortfolio, FUND_DATABASE)
   ).current;
+  const originalScore = originalResult.concentrationScore;
 
   // Live result — recomputes whenever rows change
   const result = useMemo(() => {
@@ -417,7 +418,7 @@ export default function RiskDashboard({ initialPortfolio, onBack }) {
       .filter((r) => r.name.trim() && r.allocation > 0);
     if (portfolio.length === 0) return originalResult;
     return analyzePortfolio(portfolio, FUND_DATABASE);
-  }, [rows, originalResult]);
+  }, [rows]);
 
   const { topCompanies, sectorExposure, countryExposure, concentrationScore, matchedFunds, unknownFunds } = result;
   const insights = generateInsights({ topCompanies, sectorExposure, countryExposure, concentrationScore });
