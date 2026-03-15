@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import PortfolioInput from "./components/PortfolioInput";
 import RiskDashboard from "./components/RiskDashboard";
-import { analyzePortfolio } from "./utils/analyzePortfolio";
-import FUND_DATABASE from "./data/fundDatabase";
 
 const EXAMPLE_PORTFOLIO = [
   { id: 1, name: "Avanza Global",       allocation: 40 },
@@ -11,18 +9,17 @@ const EXAMPLE_PORTFOLIO = [
 ];
 
 export default function App() {
-  const [view, setView]       = useState("input");   // "input" | "dashboard"
-  const [result, setResult]   = useState(null);
+  const [view, setView]             = useState("input");
+  const [portfolio, setPortfolio]   = useState(null);
 
   function handleAnalyze(portfolio) {
-    const analysis = analyzePortfolio(portfolio, FUND_DATABASE);
-    setResult(analysis);
+    setPortfolio(portfolio);
     setView("dashboard");
   }
 
   function handleBack() {
     setView("input");
-    setResult(null);
+    setPortfolio(null);
   }
 
   return (
@@ -47,8 +44,8 @@ export default function App() {
           />
         )}
 
-        {view === "dashboard" && result && (
-          <RiskDashboard result={result} onBack={handleBack} />
+        {view === "dashboard" && portfolio && (
+          <RiskDashboard initialPortfolio={portfolio} onBack={handleBack} />
         )}
       </main>
     </div>
