@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import {
   PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
@@ -406,12 +406,9 @@ export default function RiskDashboard({ initialPortfolio, onBack }) {
   );
 
   // Store the original score once on first render
-  const originalResult = useMemo(
-    () => analyzePortfolio(initialPortfolio, FUND_DATABASE),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-  const originalScore = originalResult.concentrationScore;
+  const originalScore = useRef(
+    analyzePortfolio(initialPortfolio, FUND_DATABASE).concentrationScore
+  ).current;
 
   // Live result — recomputes whenever rows change
   const result = useMemo(() => {
