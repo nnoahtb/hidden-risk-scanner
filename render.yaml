@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: hidden-risk-scanner-api
+    env: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node src/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ALLOWED_ORIGIN
+        sync: false  # Set this to your Vercel URL in the Render dashboard
